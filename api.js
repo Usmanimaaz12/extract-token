@@ -35,6 +35,7 @@ app.listen(port, () => {
 
 
 // http://localhost:4000/api/shopify/authorize?shop=maaz-test-dev-store
+// https://extract-token.onrender.com/api/shopify/authorize?shop=maaz-test-dev-store
 
 // 1. maaz-test-dev-shop :
 // {
