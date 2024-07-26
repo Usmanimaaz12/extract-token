@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const authorize = async (shop) => {
   return encodeURI(
-    `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${process.env.client_id}&scope=${process.env.scopes}&redirect_uri=${process.env.redirect_uri}`
+    `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${process.env.client_id}&scope=${process.env.scopes}&redirect_uri="https://extract-token.onrender.com/api/shopify/redirect"`
   );
 };
 
