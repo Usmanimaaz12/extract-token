@@ -1,0 +1,20 @@
+{
+  "name": "extract-token",
+  "version": "1.0.0",
+  "description": "A Node.js application to extract tokens using Express and Axios",
+  "main": "api.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node api.js"
+  },
+  "keywords": ["token", "express", "axios", "nodejs"],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
+    "cluster": "^0.7.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}
