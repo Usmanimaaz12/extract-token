@@ -10,6 +10,10 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.get('/', async(req,res) => {
+  res.send('<h1>Hello</h1>');
+})
+
 app.get("/api/shopify/authorize", async (req, res) => {
   try {
     return res.redirect(await authorize(req.query.shop));
