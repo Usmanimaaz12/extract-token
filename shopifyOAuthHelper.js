@@ -52,6 +52,7 @@ const registerWebhooks = async (shop, accessToken) => {
   }
 };
 
+
 module.exports = {
   authorize,
   redirect,

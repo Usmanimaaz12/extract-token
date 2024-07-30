@@ -2,7 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
-const { authorize, redirect } = require("./shopifyOAuthHelper");
+const { authorize, redirect, registerWebhooks } = require("./shopifyOAuthHelper");
+const verifyShopifyWebhook = require("./verifyShopifyWebhook");
 
 const port = process.env.PORT || 4000;
 const app = express();
@@ -32,22 +33,22 @@ app.get("/api/shopify/redirect", async (req, res) => {
   }
 });
 
-app.post('/api/webhooks/app/uninstalled', (req, res) => {
+app.post('/api/webhooks/app/uninstalled', verifyShopifyWebhook, (req, res) => {
   console.log('App Uninstalled:', req.body);
   res.status(200).send('Webhook received');
 });
 
-app.post('/api/webhooks/customers/data_request', (req, res) => {
+app.post('/api/webhooks/customers/data_request', verifyShopifyWebhook, (req, res) => {
   console.log('Customers Data Request:', req.body);
   res.status(200).send('Webhook received');
 });
 
-app.post('/api/webhooks/customers/redact', (req, res) => {
+app.post('/api/webhooks/customers/redact', verifyShopifyWebhook, (req, res) => {
   console.log('Customers Redact:', req.body);
   res.status(200).send('Webhook received');
 });
 
-app.post('/api/webhooks/shop/redact', (req, res) => {
+app.post('/api/webhooks/shop/redact', verifyShopifyWebhook, (req, res) => {
   console.log('Shop Redact:', req.body);
   res.status(200).send('Webhook received');
 });
