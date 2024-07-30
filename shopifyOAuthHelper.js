@@ -21,11 +21,40 @@ const redirect = async (code, shop) => {
     });
     console.log(data,"<==== res")
   return data;
-  //   964e88f1c8e27d74c2b633e0f1377758
+};
+
+const registerWebhooks = async (shop, accessToken) => {
+  const webhooks = [
+    { topic: 'app/uninstalled', address: `${process.env.redirect_uri}/api/webhooks/app/uninstalled` },
+    { topic: 'customers/data_request', address: `${process.env.redirect_uri}/api/webhooks/customers/data_request` },
+    { topic: 'customers/redact', address: `${process.env.redirect_uri}/api/webhooks/customers/redact` },
+    { topic: 'shop/redact', address: `${process.env.redirect_uri}/api/webhooks/shop/redact` },
+  ];
+
+  for (const webhook of webhooks) {
+    const url = `https://${shop}/admin/api/2022-01/webhooks.json`;
+    await axios.post(url, {
+      webhook: {
+        topic: webhook.topic,
+        address: webhook.address,
+        format: 'json'
+      }
+    }, {
+      headers: {
+        'X-Shopify-Access-Token': accessToken,
+        'Content-Type': 'application/json'
+      }
+    }).then(response => {
+      console.log(`Webhook registered: ${webhook.topic}`);
+    }).catch(error => {
+      console.error(`Error registering webhook: ${webhook.topic}`, error.response.data.errors);
+    });
+  }
 };
 
 module.exports = {
   authorize,
   redirect,
+  registerWebhooks
 };
 

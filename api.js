@@ -10,9 +10,9 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/', async(req,res) => {
+app.get('/', async (req, res) => {
   res.send('<h1>Hello</h1>');
-})
+});
 
 app.get("/api/shopify/authorize", async (req, res) => {
   try {
@@ -24,18 +24,37 @@ app.get("/api/shopify/authorize", async (req, res) => {
 
 app.get("/api/shopify/redirect", async (req, res) => {
   try {
-    return res.json(await redirect(req.query.code,req.query.shop));
+    const tokenData = await redirect(req.query.code, req.query.shop);
+    await registerWebhooks(req.query.shop, tokenData.access_token);
+    return res.json(tokenData);
   } catch (error) {
     console.error("Redirection error:", error);
   }
 });
 
+app.post('/api/webhooks/app/uninstalled', (req, res) => {
+  console.log('App Uninstalled:', req.body);
+  res.status(200).send('Webhook received');
+});
+
+app.post('/api/webhooks/customers/data_request', (req, res) => {
+  console.log('Customers Data Request:', req.body);
+  res.status(200).send('Webhook received');
+});
+
+app.post('/api/webhooks/customers/redact', (req, res) => {
+  console.log('Customers Redact:', req.body);
+  res.status(200).send('Webhook received');
+});
+
+app.post('/api/webhooks/shop/redact', (req, res) => {
+  console.log('Shop Redact:', req.body);
+  res.status(200).send('Webhook received');
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
-
-
 
 
 // http://localhost:4000/api/shopify/authorize?shop=maaz-test-dev-store
