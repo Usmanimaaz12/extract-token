@@ -2,7 +2,7 @@ const axios = require("axios");
 
 const authorize = async (shop) => {
   return encodeURI(
-    `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${process.env.client_id}&scope=${process.env.scopes}&redirect_uri=${process.env.redirect_uri}`
+    `https://${shop}.myshopify.com/admin/oauth/authorize?client_id=${process.env.client_id}&scope=${process.env.scopes}&redirect_uri=${process.env.redirect_uri}&access_mode=offline`
   );
 };
 
@@ -19,7 +19,7 @@ const redirect = async (code, shop) => {
     .catch((error) => {
       return error;
     });
-    console.log(data,"<==== res")
+  console.log(data,"<==== res")
   return data;
 };
 
@@ -52,10 +52,8 @@ const registerWebhooks = async (shop, accessToken) => {
   }
 };
 
-
 module.exports = {
   authorize,
   redirect,
   registerWebhooks
 };
-
